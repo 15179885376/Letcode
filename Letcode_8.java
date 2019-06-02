@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 /**
  * @author Zzy
  * @create 2019  01  09:13
@@ -50,6 +52,72 @@
  */
 public class Letcode_8 {
     public static void main(String[] args) {
-
+        String s = "  +123";
+        System.out.println( atios(s));
+    }
+    public static int atios(String num) {
+        if (num.length() == 0) {
+            return 0;
+        }
+        int n = num.length();
+        boolean isPositive = true; //判断正负
+        int begin = -1;
+        int end = 0;
+        for (int i = 0; i < n; i++) {
+            char ch = num.charAt(i);
+            if (ch != ' ') {
+                if (ch == '+' || ch == '-') {
+                    if (ch == '+') {
+                        isPositive = true;
+                    }
+                    else{
+                        isPositive=false;
+                    }
+                    if (i == n - 1) {
+                        return 0;
+                    }
+                    if (num.charAt(i + 1) <= '9' && num.charAt(i + 1) >= '0') {
+                        begin = i + 1;
+                        break;
+                    } else{
+                        return 0;
+                    }
+                } else {
+                    if (ch <= '9' && ch >= '0') {
+                        begin = i;
+                        break;
+                    } else
+                        return 0;
+                }
+            }
+        }
+        //防止全为空的情况
+        if (begin == -1) {
+            return 0;
+        }
+        for (int j = begin; j < n; j++) {
+            char now = num.charAt(j);
+            if (now <= '9' && now >= '0') {
+                end = j;
+            }else{
+                break;
+            }
+        }
+        String res="";
+        if(isPositive==true){
+            res+="+"+num.substring(begin,end+1);
+        }
+        else {
+            res+="-"+num.substring(begin,end+1);
+        }
+        System.out.println(res);
+        BigInteger bigInteger=new BigInteger(res);
+        if(bigInteger.compareTo(new BigInteger(String.valueOf(Integer.MAX_VALUE)))==1){
+            return Integer.MAX_VALUE;
+        }
+        if(bigInteger.compareTo(new BigInteger(String.valueOf(Integer.MIN_VALUE)))==-1){
+            return Integer.MIN_VALUE;
+        }
+        return (int)Integer.valueOf(res);
     }
 }
